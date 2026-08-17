@@ -7,7 +7,13 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        /* 사용자 지정 커스텀 폰트 불러오기 */
+        @font-face {
+            font-family: 'GriunFromsol';
+            src: url('./Griun_Fromsol-Rg.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
         
         :root {
             --pastel-bg: #E8F6F3;
@@ -18,7 +24,7 @@
         }
 
         body {
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            font-family: 'GriunFromsol', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
             background: linear-gradient(135deg, #E8F6F3 0%, #F3FAF8 100%);
             color: var(--text-dark);
             word-break: keep-all;
@@ -61,7 +67,7 @@
             transform: translateY(-3px);
         }
 
-        /* 일체형 아코디언 프레임 (모서리 깨짐/삐져나옴 근본적 해결) */
+        /* 일체형 아코디언 프레임 (모서리 깨짐 방지) */
         .accordion-item {
             background-color: #FFFFFF;
             border: 2px solid #E1F2EC;
@@ -110,7 +116,7 @@
             stroke: #FFFFFF;
         }
 
-        /* 부드러운 슬라이드 펼침 애니메이션 */
+        /* 슬라이드 펼침 애니메이션 */
         .accordion-content-wrapper {
             display: grid;
             grid-template-rows: 0fr;
@@ -160,7 +166,7 @@
 
         <!-- 1. 메인 배너 이미지 -->
         <div class="banner-container w-full border-4 border-white aspect-[3/1] max-h-72">
-            <img src="./1786892820788.png" alt="Zombie High School Welcome Banner" class="banner-img" onerror="this.onerror=null; this.src='18174.png';">
+            <img src="./18174.png" alt="Zombie High School Welcome Banner" class="banner-img" onerror="this.onerror=null; this.src='18174.png';">
             
             <!-- 배너 출처 뱃지 -->
             <div class="absolute bottom-2 right-3 bg-black/40 backdrop-blur-md text-white text-[10px] sm:text-xs px-2.5 py-1 rounded-full font-medium">
@@ -272,7 +278,7 @@
                             </div>
                             <div class="flex items-center justify-between p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC]">
                                 <span class="font-bold text-slate-400">Executive</span>
-                                <span class="font-semibold text-slate-700 text-sm sm:text-base">앝박 · 이담 · 클냥 · mc</span>
+                                <span class="font-semibold text-slate-700 text-sm sm:text-base">얕박 · 이담 · 클냥 · mc</span>
                             </div>
                         </div>
                     </div>
@@ -407,5 +413,4 @@
     </script>
 </body>
 </html>
-
 
