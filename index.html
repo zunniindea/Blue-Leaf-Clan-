@@ -46,7 +46,7 @@
             display: block;
         }
 
-                /* 새로 붙여넣을 코드 */
+                        /* 카드 및 아코디언 일체형 스타일 */
         .leaf-card {
             background-color: var(--pastel-card);
             border-radius: 28px;
@@ -61,6 +61,7 @@
             transform: translateY(-3px);
         }
 
+        /* 일체형 아코디언 프레임 (모서리 깨짐 방지) */
         .accordion-item {
             background-color: #FFFFFF;
             border: 2px solid #E1F2EC;
@@ -81,6 +82,7 @@
             box-shadow: 0 12px 28px rgba(88, 196, 153, 0.2);
         }
 
+        /* 아코디언 상단 버튼 */
         .accordion-btn {
             width: 100%;
             padding: 22px 28px;
@@ -99,10 +101,35 @@
             color: #FFFFFF;
         }
 
+        .arrow-icon {
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .accordion-item.active .arrow-icon {
+            transform: rotate(180deg);
+            stroke: #FFFFFF;
+        }
+
+        /* 아코디언 내용 영역 */
+        .accordion-content-wrapper {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .accordion-item.active .accordion-content-wrapper {
+            grid-template-rows: 1fr;
+        }
+
+        .accordion-content-inner {
+            overflow: hidden;
+        }
+
         .accordion-body {
             padding: 24px 28px 28px 28px;
             background-color: #FFFFFF;
         }
+
 
         /* 복사 알림 토스트 */
         #toast {
