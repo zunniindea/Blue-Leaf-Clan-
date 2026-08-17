@@ -46,7 +46,7 @@
             display: block;
         }
 
-                        /* 카드 및 아코디언 일체형 스타일 */
+        /* 카드 기본 스타일 */
         .leaf-card {
             background-color: var(--pastel-card);
             border-radius: 28px;
@@ -61,7 +61,7 @@
             transform: translateY(-3px);
         }
 
-        /* 일체형 아코디언 프레임 (모서리 깨짐 방지) */
+        /* 일체형 아코디언 프레임 (모서리 깨짐/삐져나옴 근본적 해결) */
         .accordion-item {
             background-color: #FFFFFF;
             border: 2px solid #E1F2EC;
@@ -82,7 +82,7 @@
             box-shadow: 0 12px 28px rgba(88, 196, 153, 0.2);
         }
 
-        /* 아코디언 상단 버튼 */
+        /* 아코디언 상단 헤더 버튼 */
         .accordion-btn {
             width: 100%;
             padding: 22px 28px;
@@ -110,7 +110,7 @@
             stroke: #FFFFFF;
         }
 
-        /* 아코디언 내용 영역 */
+        /* 부드러운 슬라이드 펼침 애니메이션 */
         .accordion-content-wrapper {
             display: grid;
             grid-template-rows: 0fr;
@@ -129,7 +129,6 @@
             padding: 24px 28px 28px 28px;
             background-color: #FFFFFF;
         }
-
 
         /* 복사 알림 토스트 */
         #toast {
@@ -159,13 +158,13 @@
 
     <div class="w-full max-w-md md:max-w-2xl lg:max-w-3xl space-y-6 md:space-y-8 my-auto">
 
-        <!-- 1. 메인 배너 이미지 (아래 "여기에_사진_파일명.png" 부분을 올리신 사진 이름으로 바꿔주세요!) -->
+        <!-- 1. 메인 배너 이미지 -->
         <div class="banner-container w-full border-4 border-white aspect-[3/1] max-h-72">
-            <img src="./1786892820788.png" alt="Zombie High School Welcome Banner" class="banner-img">
+            <img src="./18174.png" alt="Zombie High School Welcome Banner" class="banner-img" onerror="this.onerror=null; this.src='18174.png';">
             
             <!-- 배너 출처 뱃지 -->
             <div class="absolute bottom-2 right-3 bg-black/40 backdrop-blur-md text-white text-[10px] sm:text-xs px-2.5 py-1 rounded-full font-medium">
-                배너 출처: 1564335님
+                배너 이미지 출처: 1564335님
             </div>
         </div>
 
@@ -273,7 +272,7 @@
                             </div>
                             <div class="flex items-center justify-between p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC]">
                                 <span class="font-bold text-slate-400">Executive</span>
-                                <span class="font-semibold text-slate-700 text-sm sm:text-base">사령 · 이담 · 클냥 · mc</span>
+                                <span class="font-semibold text-slate-700 text-sm sm:text-base">얕박 · 이담 · 클냥 · mc</span>
                             </div>
                         </div>
                     </div>
@@ -317,6 +316,11 @@
                                     <div>• <strong>단트 전형 (1/3):</strong> 단체 트레이싱 1년에 2장 이상</div>
                                     <div class="line-through text-slate-400">• <strong>로고 전형 (2/2):</strong> 모집 마감</div>
                                 </div>
+
+                                <div class="pt-2.5 border-t border-[#C6EADF] text-xs text-slate-500 space-y-1.5 leading-relaxed">
+                                    <p><strong>[아트부 혜택]</strong> 현생 존중, 슬롯/마감 자율, 마감 디스코드, 다중 클랜 허용, 인게임 미접속 제명 없음, 개인정보 공개 요구 없음</p>
+                                    <p><strong>[지원 양식]</strong> 닉네임 / 원하는 전형 / 레이어 인증 가능 디지털 그림 3장 이상 (심사 최대 7일 소요)</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -341,13 +345,17 @@
                         <div class="accordion-body text-xs sm:text-sm text-slate-600 space-y-2.5">
                             <div class="p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC]">
                                 <strong class="text-slate-800 text-sm">1. 50일 미접속 시 제명</strong>
+                                <p class="text-slate-500 mt-1">사정이 있는 경우 사전에 문의처로 말씀해 주시면 고려해 드립니다.</p>
                             </div>
                             <div class="p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC]">
                                 <strong class="text-slate-800 text-sm">2. 매너 언행 준수</strong>
+                                <p class="text-slate-500 mt-1">도가 지나친 욕설, 도배, 부적절한 언행 및 다수가 불편한 행동 금지</p>
                             </div>
                             <div class="p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC]">
                                 <strong class="text-slate-800 text-sm">3. 개인정보 유출 엄금</strong>
+                                <p class="text-slate-500 mt-1">상대방의 동의 없는 개인정보 발설 시 즉시 제명 조치됩니다.</p>
                             </div>
+                            <p class="text-center text-xs text-slate-400 pt-1">* 자세한 상세 수칙은 오픈채팅방 공지를 참조해 주세요.</p>
                         </div>
                     </div>
                 </div>
@@ -399,3 +407,5 @@
     </script>
 </body>
 </html>
+
+
