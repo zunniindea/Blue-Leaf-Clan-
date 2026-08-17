@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>푸른잎 클랜 - 좀비고등학교</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* 사용자 지정 커스텀 폰트 불러오기 */
@@ -28,6 +27,49 @@
             background: linear-gradient(135deg, #E8F6F3 0%, #F3FAF8 100%);
             color: var(--text-dark);
             word-break: keep-all;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 떨어지는 나뭇잎 애니메이션 컨테이너 */
+        .leaves-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .leaf {
+            position: absolute;
+            top: -10%;
+            user-select: none;
+            animation: fall linear infinite;
+            opacity: 0.6;
+            font-size: 1.2rem;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg) translateX(0);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(50vh) rotate(180deg) translateX(20px);
+            }
+            100% {
+                transform: translateY(105vh) rotate(360deg) translateX(-20px);
+                opacity: 0;
+            }
+        }
+
+        /* 메인 콘텐츠 래퍼 */
+        .main-wrapper {
+            position: relative;
+            z-index: 10;
         }
 
         /* 반응형 배너 컨테이너 */
@@ -67,7 +109,7 @@
             transform: translateY(-3px);
         }
 
-        /* 일체형 아코디언 프레임 (모서리 깨짐 방지) */
+        /* 일체형 아코디언 프레임 */
         .accordion-item {
             background-color: #FFFFFF;
             border: 2px solid #E1F2EC;
@@ -142,6 +184,7 @@
             opacity: 0;
             transition: opacity 0.35s, visibility 0.35s, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
             transform: translate(-50%, 20px);
+            z-index: 50;
         }
         #toast.show {
             visibility: visible;
@@ -182,19 +225,18 @@
 </head>
 <body class="min-h-screen py-8 px-4 sm:px-6 lg:px-8 flex justify-center items-start">
 
-    <div class="w-full max-w-md md:max-w-2xl lg:max-w-3xl space-y-6 md:space-y-8 my-auto">
+    <div class="leaves-container" id="leavesContainer"></div>
 
-        <!-- 1. 메인 배너 이미지 -->
+    <div class="main-wrapper w-full max-w-md md:max-w-2xl lg:max-w-3xl space-y-6 md:space-y-8 my-auto">
+
         <div class="banner-container w-full border-4 border-white aspect-[3/1] max-h-72">
             <img src="./1786892820788.png" alt="Zombie High School Welcome Banner" class="banner-img" onerror="this.onerror=null; this.src='18174.png';">
             
-            <!-- 배너 출처 뱃지 -->
             <div class="absolute bottom-2 right-3 bg-black/40 backdrop-blur-md text-white text-[10px] sm:text-xs px-2.5 py-1 rounded-full font-medium">
                 배너 이미지 출처: 1564335님
             </div>
         </div>
 
-        <!-- 2. 인트로 메인 카드 -->
         <div class="leaf-card p-6 sm:p-8 md:p-10 text-center space-y-4 border-2 border-white">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EBF7F3] text-[#3F9E78] text-xs sm:text-sm font-bold tracking-wide border border-[#C6EADF]">
                 ZOMBIE HIGH SCHOOL CLAN
@@ -203,6 +245,14 @@
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight">
                 푸른잎 클랜
             </h1>
+
+            <div class="flex flex-wrap justify-center gap-1.5 text-[11px] sm:text-xs pt-1">
+                <span class="bg-[#EBF7F3] text-[#3F9E78] px-2.5 py-1 rounded-full font-medium border border-[#C6EADF]">#자율마감</span>
+                <span class="bg-[#EBF7F3] text-[#3F9E78] px-2.5 py-1 rounded-full font-medium border border-[#C6EADF]">#매너중시</span>
+                <span class="bg-[#EBF7F3] text-[#3F9E78] px-2.5 py-1 rounded-full font-medium border border-[#C6EADF]">#친목환영</span>
+                <span class="bg-[#EBF7F3] text-[#3F9E78] px-2.5 py-1 rounded-full font-medium border border-[#C6EADF]">#소통중시</span>
+                <span class="bg-[#EBF7F3] text-[#3F9E78] px-2.5 py-1 rounded-full font-medium border border-[#C6EADF]">#현생존중</span>
+            </div>
 
             <div class="flex flex-wrap items-center justify-center gap-2.5 pt-1 text-xs sm:text-sm">
                 <span class="bg-slate-100 text-slate-700 px-4 py-2 rounded-full font-mono font-bold border border-slate-200/80 shadow-sm">
@@ -222,10 +272,8 @@
             </p>
         </div>
 
-        <!-- 3. 아코디언 메뉴 -->
         <div class="space-y-4">
 
-            <!-- 기본 정보 & 버프 -->
             <div class="accordion-item">
                 <button class="accordion-btn text-sm sm:text-base" onclick="toggleAccordion(this)">
                     <span class="flex items-center gap-3">
@@ -272,7 +320,6 @@
                 </div>
             </div>
 
-            <!-- 운영진 목록 -->
             <div class="accordion-item">
                 <button class="accordion-btn text-sm sm:text-base" onclick="toggleAccordion(this)">
                     <span class="flex items-center gap-3">
@@ -289,14 +336,12 @@
                     <div class="accordion-content-inner">
                         <div class="accordion-body text-xs sm:text-sm text-slate-600 space-y-3">
                             
-                            <!-- Master (아이콘: 🍀) -->
                             <div class="flex items-center justify-between p-3 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC]">
                                 <div class="flex items-center gap-2">
                                     <span class="text-base">🍀</span>
                                     <span class="font-bold text-slate-400">Master</span>
                                 </div>
                                 <div class="flex items-center gap-2.5">
-                                    <!-- 마스터 프로필 이미지 (파일명: master.png) -->
                                     <div class="profile-avatar">
                                         <img src="./master.jpg" alt="츄냥" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-5 h-5 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
                                     </div>
@@ -304,14 +349,12 @@
                                 </div>
                             </div>
 
-                            <!-- Sub Master (아이콘: ✿) -->
                             <div class="flex items-center justify-between p-3 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC]">
                                 <div class="flex items-center gap-2">
                                     <span class="text-base text-[#58C499]">✿</span>
                                     <span class="font-bold text-slate-400">Sub Master</span>
                                 </div>
                                 <div class="flex items-center gap-3">
-                                    <!-- 서브마스터 1: 적타 -->
                                     <div class="flex items-center gap-1.5">
                                         <div class="profile-avatar">
                                             <img src="./sub1.png" alt="적타" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-5 h-5 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
@@ -319,7 +362,6 @@
                                         <span class="font-bold text-slate-800 text-xs sm:text-sm">적타</span>
                                     </div>
                                     <span class="text-slate-300">•</span>
-                                    <!-- 서브마스터 2: 둔하 -->
                                     <div class="flex items-center gap-1.5">
                                         <div class="profile-avatar">
                                             <img src="./sub2.png" alt="둔하" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-5 h-5 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
@@ -329,35 +371,30 @@
                                 </div>
                             </div>
 
-                            <!-- Executive (아이콘: ❀) -->
                             <div class="p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC] space-y-2.5">
                                 <div class="flex items-center gap-2">
                                     <span class="text-base text-[#3F9E78]">❀</span>
                                     <span class="font-bold text-slate-400">Executive</span>
                                 </div>
                                 <div class="grid grid-cols-2 gap-2 pt-1">
-                                    <!-- 운영진 1: 얕박 -->
                                     <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-slate-100">
                                         <div class="profile-avatar !w-8 !h-8">
                                             <img src="./exec1.png" alt="얕박" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-4 h-4 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
                                         </div>
                                         <span class="font-semibold text-slate-700 text-xs sm:text-sm">얕박</span>
                                     </div>
-                                    <!-- 운영진 2: 이담 -->
                                     <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-slate-100">
                                         <div class="profile-avatar !w-8 !h-8">
                                             <img src="./exec2.png" alt="이담" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-4 h-4 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
                                         </div>
                                         <span class="font-semibold text-slate-700 text-xs sm:text-sm">이담</span>
                                     </div>
-                                    <!-- 운영진 3: 클냥 -->
                                     <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-slate-100">
                                         <div class="profile-avatar !w-8 !h-8">
                                             <img src="./exec3.png" alt="클냥" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-4 h-4 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
                                         </div>
                                         <span class="font-semibold text-slate-700 text-xs sm:text-sm">클냥</span>
                                     </div>
-                                    <!-- 운영진 4: mc -->
                                     <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-slate-100">
                                         <div class="profile-avatar !w-8 !h-8">
                                             <img src="./exec4.png" alt="mc" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-4 h-4 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
@@ -372,7 +409,6 @@
                 </div>
             </div>
 
-            <!-- 가입 전형 & 아트부 조건 -->
             <div class="accordion-item">
                 <button class="accordion-btn text-sm sm:text-base" onclick="toggleAccordion(this)">
                     <span class="flex items-center gap-3">
@@ -420,7 +456,6 @@
                 </div>
             </div>
 
-            <!-- 클랜 기본 수칙 -->
             <div class="accordion-item">
                 <button class="accordion-btn text-sm sm:text-base" onclick="toggleAccordion(this)">
                     <span class="flex items-center gap-3">
@@ -454,16 +489,61 @@
                 </div>
             </div>
 
+            <div class="accordion-item">
+                <button class="accordion-btn text-sm sm:text-base" onclick="toggleAccordion(this)">
+                    <span class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-[#58C499]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        자주 묻는 질문 (Q&A)
+                    </span>
+                    <svg class="w-5 h-5 arrow-icon text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <div class="accordion-content-wrapper">
+                    <div class="accordion-content-inner">
+                        <div class="accordion-body text-xs sm:text-sm text-slate-600 space-y-3">
+                            <div class="p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC] space-y-1">
+                                <div class="font-bold text-[#3F9E78] flex items-center gap-1.5">
+                                    <span>Q. 나이 제한이나 성별 제한이 있나요?</span>
+                                </div>
+                                <p class="text-slate-600 pl-1">A. 기본적인 매너와 수칙을 지켜주신다면 나이나 성별에 관한 제약 없이 누구나 환영합니다!</p>
+                            </div>
+                            
+                            <div class="p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC] space-y-1">
+                                <div class="font-bold text-[#3F9E78] flex items-center gap-1.5">
+                                    <span>Q. 아트부 지원 시 심사는 얼마나 걸리나요?</span>
+                                </div>
+                                <p class="text-slate-600 pl-1">A. 지원 양식 제출 후 운영진 내부 검토를 거쳐 최대 7일 이내에 개별 안내드립니다.</p>
+                            </div>
+
+                            <div class="p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC] space-y-1">
+                                <div class="font-bold text-[#3F9E78] flex items-center gap-1.5">
+                                    <span>Q. 개인 사정으로 장기 미접속을 해야 할 때는요?</span>
+                                </div>
+                                <p class="text-slate-600 pl-1">A. 시험 기간이나 여행 등 사유가 있으실 경우 사전에 운영진에게 미리 알려주시면 제명 대상에서 제외됩니다.</p>
+                            </div>
+
+                            <div class="p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC] space-y-1">
+                                <div class="font-bold text-[#3F9E78] flex items-center gap-1.5">
+                                    <span>Q. 복귀 유저나 초보자도 가입 가능한가요?</span>
+                                </div>
+                                <p class="text-slate-600 pl-1">A. 네! 게임을 막 시작하셨거나 오랫동안 쉬다 오신 복귀 유저분들도 편하게 활동하실 수 있습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <!-- 4. 하단 가입 버튼 -->
         <div class="pt-3">
             <a href="https://open.kakao.com/o/gL5sTn1h" target="_blank" class="btn-pulse block w-full bg-[#58C499] hover:bg-[#48B388] text-white py-4 sm:py-5 rounded-full font-extrabold text-center text-sm sm:text-base shadow-lg transition transform hover:-translate-y-0.5 active:scale-95">
                 푸른잎 클랜 가입 신청하기
             </a>
         </div>
 
-        <!-- 푸터 및 출처 안내 -->
         <footer class="text-center text-xs text-slate-400 pt-2 pb-8 space-y-1 leading-relaxed">
             <p>배너 이미지 출처: <span class="font-semibold text-slate-500">1564335님</span></p>
             <p>츄냥님 프로필 출처: <span class="font-semibold text-slate-500">육공님</span></p>
@@ -472,12 +552,12 @@
 
     </div>
 
-    <!-- 복사 토스트 알림 -->
     <div id="toast" class="fixed bottom-8 left-1/2 bg-slate-800/90 backdrop-blur-sm text-white text-xs sm:text-sm font-medium px-6 py-3 rounded-full shadow-2xl">
         클랜 ID가 복사되었습니다!
     </div>
 
     <script>
+        // 아코디언 토글 함수
         function toggleAccordion(button) {
             const currentItem = button.parentElement;
             document.querySelectorAll('.accordion-item').forEach(item => {
@@ -486,6 +566,7 @@
             currentItem.classList.toggle('active');
         }
 
+        // 클랜 ID 복사 함수
         function copyClanId() {
             const clanId = document.getElementById('clanId').innerText;
             const tempElem = document.createElement('textarea');
@@ -498,8 +579,33 @@
             toast.classList.add('show');
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }
+
+        // 배경 나뭇잎 생성 스크립트
+        function createLeaves() {
+            const container = document.getElementById('leavesContainer');
+            const leafIcons = ['🍃', '🌿', '🍀'];
+            const leafCount = 12; // 나뭇잎 수량
+
+            for (let i = 0; i < leafCount; i++) {
+                const leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                leaf.innerText = leafIcons[Math.floor(Math.random() * leafIcons.length)];
+                
+                // 위치 및 속도 랜덤 생성
+                leaf.style.left = Math.random() * 100 + '%';
+                leaf.style.animationDuration = (Math.random() * 8 + 7) + 's'; // 7~15초 사이 속도
+                leaf.style.animationDelay = (Math.random() * 10) + 's';
+                leaf.style.fontSize = (Math.random() * 0.8 + 0.8) + 'rem';
+                
+                container.appendChild(leaf);
+            }
+        }
+
+        // 페이지 로드 후 나뭇잎 생성
+        window.addEventListener('DOMContentLoaded', createLeaves);
     </script>
 </body>
 </html>
+
 
 
