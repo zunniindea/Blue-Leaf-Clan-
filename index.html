@@ -158,6 +158,26 @@
             70% { box-shadow: 0 0 0 15px rgba(88, 196, 153, 0); }
             100% { box-shadow: 0 0 0 0 rgba(88, 196, 153, 0); }
         }
+
+        /* 아바타 프로필 이미지 박스 */
+        .profile-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: #EBF7F3;
+            border: 2px solid #C6EADF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body class="min-h-screen py-8 px-4 sm:px-6 lg:px-8 flex justify-center items-start">
@@ -267,19 +287,86 @@
                 </button>
                 <div class="accordion-content-wrapper">
                     <div class="accordion-content-inner">
-                        <div class="accordion-body text-xs sm:text-sm text-slate-600 space-y-2.5">
-                            <div class="flex items-center justify-between p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC]">
-                                <span class="font-bold text-slate-400">Master</span>
-                                <span class="font-bold text-slate-800 text-sm sm:text-base">츄냥</span>
+                        <div class="accordion-body text-xs sm:text-sm text-slate-600 space-y-3">
+                            
+                            <!-- Master (아이콘: 🍀) -->
+                            <div class="flex items-center justify-between p-3 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC]">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-base">🍀</span>
+                                    <span class="font-bold text-slate-400">Master</span>
+                                </div>
+                                <div class="flex items-center gap-2.5">
+                                    <!-- 마스터 프로필 이미지 (파일명: master.png) -->
+                                    <div class="profile-avatar">
+                                        <img src="./master.jpg" alt="츄냥" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-5 h-5 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
+                                    </div>
+                                    <span class="font-bold text-slate-800 text-sm sm:text-base">츄냥</span>
+                                </div>
                             </div>
-                            <div class="flex items-center justify-between p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC]">
-                                <span class="font-bold text-slate-400">Sub Master</span>
-                                <span class="font-bold text-slate-800 text-sm sm:text-base">적타 · 둔하</span>
+
+                            <!-- Sub Master (아이콘: ✿) -->
+                            <div class="flex items-center justify-between p-3 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC]">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-base text-[#58C499]">✿</span>
+                                    <span class="font-bold text-slate-400">Sub Master</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <!-- 서브마스터 1: 적타 -->
+                                    <div class="flex items-center gap-1.5">
+                                        <div class="profile-avatar">
+                                            <img src="./sub1.png" alt="적타" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-5 h-5 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
+                                        </div>
+                                        <span class="font-bold text-slate-800 text-xs sm:text-sm">적타</span>
+                                    </div>
+                                    <span class="text-slate-300">•</span>
+                                    <!-- 서브마스터 2: 둔하 -->
+                                    <div class="flex items-center gap-1.5">
+                                        <div class="profile-avatar">
+                                            <img src="./sub2.png" alt="둔하" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-5 h-5 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
+                                        </div>
+                                        <span class="font-bold text-slate-800 text-xs sm:text-sm">둔하</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="flex items-center justify-between p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC]">
-                                <span class="font-bold text-slate-400">Executive</span>
-                                <span class="font-semibold text-slate-700 text-sm sm:text-base">얕박 · 이담 · 클냥 · mc</span>
+
+                            <!-- Executive (아이콘: ❀) -->
+                            <div class="p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC] space-y-2.5">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-base text-[#3F9E78]">❀</span>
+                                    <span class="font-bold text-slate-400">Executive</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 pt-1">
+                                    <!-- 운영진 1: 얕박 -->
+                                    <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-slate-100">
+                                        <div class="profile-avatar !w-8 !h-8">
+                                            <img src="./exec1.png" alt="얕박" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-4 h-4 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
+                                        </div>
+                                        <span class="font-semibold text-slate-700 text-xs sm:text-sm">얕박</span>
+                                    </div>
+                                    <!-- 운영진 2: 이담 -->
+                                    <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-slate-100">
+                                        <div class="profile-avatar !w-8 !h-8">
+                                            <img src="./exec2.png" alt="이담" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-4 h-4 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
+                                        </div>
+                                        <span class="font-semibold text-slate-700 text-xs sm:text-sm">이담</span>
+                                    </div>
+                                    <!-- 운영진 3: 클냥 -->
+                                    <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-slate-100">
+                                        <div class="profile-avatar !w-8 !h-8">
+                                            <img src="./exec3.png" alt="클냥" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-4 h-4 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
+                                        </div>
+                                        <span class="font-semibold text-slate-700 text-xs sm:text-sm">클냥</span>
+                                    </div>
+                                    <!-- 운영진 4: mc -->
+                                    <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-slate-100">
+                                        <div class="profile-avatar !w-8 !h-8">
+                                            <img src="./exec4.png" alt="mc" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-4 h-4 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
+                                        </div>
+                                        <span class="font-semibold text-slate-700 text-xs sm:text-sm">mc</span>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -377,9 +464,10 @@
         </div>
 
         <!-- 푸터 및 출처 안내 -->
-        <footer class="text-center text-xs text-slate-400 pt-2 pb-8 space-y-1">
+        <footer class="text-center text-xs text-slate-400 pt-2 pb-8 space-y-1 leading-relaxed">
             <p>배너 이미지 출처: <span class="font-semibold text-slate-500">1564335님</span></p>
-            <p>© Pureun-ip Clan. All rights reserved.</p>
+            <p>츄냥님 프로필 출처: <span class="font-semibold text-slate-500">육공님</span></p>
+            <p class="pt-1">© Pureun-ip Clan. All rights reserved.</p>
         </footer>
 
     </div>
@@ -413,4 +501,5 @@
     </script>
 </body>
 </html>
+
 
