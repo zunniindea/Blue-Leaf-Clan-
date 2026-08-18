@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>푸른잎 클랜 - 좀비고등학교</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* 사용자 지정 커스텀 폰트 불러오기 */
         @font-face {
             font-family: 'GriunFromsol';
             src: url('./Griun_Fromsol-Rg (1).ttf') format('truetype');
@@ -31,219 +31,236 @@
             overflow-x: hidden;
         }
 
-        /* 떨어지는 나뭇잎 애니메이션 컨테이너 */
-        .leaves-container {
+        /* 1. 상단 스크롤 진행 바 */
+        #scrollProgress {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
+            height: 3px;
+            background: linear-gradient(to right, #58C499, #3F9E78);
+            width: 0%;
+            z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+
+        /* 떨어지는 나뭇잎 */
+        .leaves-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; overflow: hidden;
         }
 
         .leaf {
-            position: absolute;
-            top: -10%;
-            user-select: none;
-            animation: fall linear infinite;
-            opacity: 0.6;
-            font-size: 1.2rem;
+            position: absolute; top: -10%; user-select: none;
+            animation: fall linear infinite; opacity: 0.6; font-size: 1.2rem;
         }
 
         @keyframes fall {
-            0% {
-                transform: translateY(0) rotate(0deg) translateX(0);
-                opacity: 0.8;
-            }
-            50% {
-                transform: translateY(50vh) rotate(180deg) translateX(20px);
-            }
-            100% {
-                transform: translateY(105vh) rotate(360deg) translateX(-20px);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0.8; }
+            50% { transform: translateY(50vh) rotate(180deg) translateX(20px); }
+            100% { transform: translateY(105vh) rotate(360deg) translateX(-20px); opacity: 0; }
         }
 
-        /* 메인 콘텐츠 래퍼 */
-        .main-wrapper {
-            position: relative;
-            z-index: 10;
-        }
+        .main-wrapper { position: relative; z-index: 10; }
 
-        /* 반응형 배너 컨테이너 */
+        /* 입체 패럴랙스 배너 카운터 */
         .banner-container {
             position: relative;
             overflow: hidden;
             border-radius: 32px;
             box-shadow: 0 15px 35px -10px rgba(88, 196, 153, 0.3);
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
             background-color: #D6F2EA;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            cursor: pointer;
         }
 
-        .banner-container:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px -10px rgba(88, 196, 153, 0.4);
-        }
-
-        .banner-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+        .banner-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
         /* 카드 기본 스타일 */
         .leaf-card {
-            background-color: var(--pastel-card);
-            border-radius: 28px;
-            border: 2px solid #E1F2EC;
+            background-color: var(--pastel-card); border-radius: 28px; border: 2px solid #E1F2EC;
             transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
             box-shadow: 0 8px 24px rgba(88, 196, 153, 0.08);
         }
-
         .leaf-card:hover {
-            border-color: var(--mint-primary);
-            box-shadow: 0 12px 30px rgba(88, 196, 153, 0.2);
+            border-color: var(--mint-primary); box-shadow: 0 12px 30px rgba(88, 196, 153, 0.2);
             transform: translateY(-3px);
         }
 
-        /* 일체형 아코디언 프레임 */
+        /* 아코디언 */
         .accordion-item {
-            background-color: #FFFFFF;
-            border: 2px solid #E1F2EC;
-            border-radius: 28px;
-            overflow: hidden;
-            transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+            background-color: #FFFFFF; border: 2px solid #E1F2EC; border-radius: 28px;
+            overflow: hidden; transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
             box-shadow: 0 6px 18px rgba(88, 196, 153, 0.08);
+            scroll-margin-top: 20px;
         }
+        .accordion-item:hover { border-color: var(--mint-primary); transform: translateY(-2px); }
+        .accordion-item.active { border-color: var(--mint-primary); box-shadow: 0 12px 28px rgba(88, 196, 153, 0.2); }
 
-        .accordion-item:hover {
-            border-color: var(--mint-primary);
-            box-shadow: 0 10px 25px rgba(88, 196, 153, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .accordion-item.active {
-            border-color: var(--mint-primary);
-            box-shadow: 0 12px 28px rgba(88, 196, 153, 0.2);
-        }
-
-        /* 아코디언 상단 헤더 버튼 */
         .accordion-btn {
-            width: 100%;
-            padding: 22px 28px;
-            font-weight: 700;
-            color: var(--text-dark);
+            width: 100%; padding: 22px 28px; font-weight: 700; color: var(--text-dark);
+            display: flex; justify-content: space-between; align-items: center;
+            transition: background-color 0.3s ease, color 0.3s ease; cursor: pointer;
+        }
+        .accordion-item.active .accordion-btn { background-color: var(--mint-primary); color: #FFFFFF; }
+        .arrow-icon { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .accordion-item.active .arrow-icon { transform: rotate(180deg); stroke: #FFFFFF; }
+
+        .accordion-content-wrapper { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.35s cubic-bezier(0.25, 1, 0.5, 1); }
+        .accordion-item.active .accordion-content-wrapper { grid-template-rows: 1fr; }
+        .accordion-content-inner { overflow: hidden; }
+        .accordion-body { padding: 24px 28px 28px 28px; background-color: #FFFFFF; }
+
+        .profile-avatar {
+            width: 38px; height: 38px; border-radius: 50%; overflow: hidden;
+            background-color: #EBF7F3; border: 2px solid #C6EADF;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* 플로팅 퀵 버튼 */
+        .floating-action {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 40;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .floating-action.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .floating-btn {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: #FFFFFF;
+            border: 2px solid #E1F2EC;
+            color: #3F9E78;
+            display: flex;
             align-items: center;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            cursor: pointer;
-            background-color: transparent;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
         }
 
-        .accordion-item.active .accordion-btn {
-            background-color: var(--mint-primary);
+        .floating-btn:hover {
+            background: #58C499;
             color: #FFFFFF;
+            border-color: #58C499;
+            transform: scale(1.08);
         }
 
-        .arrow-icon {
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        /* 중앙 모달 (배경 흐림 애니메이션) */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(44, 62, 80, 0.4);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
         }
 
-        .accordion-item.active .arrow-icon {
-            transform: rotate(180deg);
-            stroke: #FFFFFF;
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
         }
 
-        /* 슬라이드 펼침 애니메이션 */
-        .accordion-content-wrapper {
-            display: grid;
-            grid-template-rows: 0fr;
-            transition: grid-template-rows 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .accordion-item.active .accordion-content-wrapper {
-            grid-template-rows: 1fr;
-        }
-
-        .accordion-content-inner {
+        .modal-container {
+            background-color: #FFFFFF;
+            border-radius: 32px;
+            width: 100%;
+            max-width: 440px;
+            transform: scale(0.9) translateY(10px);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 25px 50px -12px rgba(88, 196, 153, 0.25);
+            border: 2px solid #E1F2EC;
             overflow: hidden;
         }
 
-        .accordion-body {
-            padding: 24px 28px 28px 28px;
-            background-color: #FFFFFF;
+        .modal-overlay.active .modal-container {
+            transform: scale(1) translateY(0);
         }
 
-        /* 복사 알림 토스트 */
+        /* 이스터에그 폭죽 피스 스타일 */
+        .easter-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 150;
+            animation: particleFly 1.5s ease-out forwards;
+            font-size: 1.5rem;
+        }
+
+        @keyframes particleFly {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy)) scale(0.3) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
         #toast {
-            visibility: hidden;
-            opacity: 0;
+            visibility: hidden; opacity: 0;
             transition: opacity 0.35s, visibility 0.35s, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-            transform: translate(-50%, 20px);
-            z-index: 50;
+            transform: translate(-50%, 20px); z-index: 50;
         }
-        #toast.show {
-            visibility: visible;
-            opacity: 1;
-            transform: translate(-50%, 0);
-        }
-
-        .btn-pulse {
-            animation: pulse-glow 2.5s infinite;
-        }
-
+        #toast.show { visibility: visible; opacity: 1; transform: translate(-50%, 0); }
+        .btn-pulse { animation: pulse-glow 2.5s infinite; }
         @keyframes pulse-glow {
             0% { box-shadow: 0 0 0 0 rgba(88, 196, 153, 0.5); }
             70% { box-shadow: 0 0 0 15px rgba(88, 196, 153, 0); }
             100% { box-shadow: 0 0 0 0 rgba(88, 196, 153, 0); }
         }
-
-        /* 아바타 프로필 이미지 박스 */
-        .profile-avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            overflow: hidden;
-            background-color: #EBF7F3;
-            border: 2px solid #C6EADF;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .profile-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
     </style>
 </head>
 <body class="min-h-screen py-8 px-4 sm:px-6 lg:px-8 flex justify-center items-start">
 
+    <!-- 상단 스크롤 진행바 -->
+    <div id="scrollProgress"></div>
+
+    <!-- 나뭇잎 이펙트 -->
     <div class="leaves-container" id="leavesContainer"></div>
 
     <div class="main-wrapper w-full max-w-md md:max-w-2xl lg:max-w-3xl space-y-6 md:space-y-8 my-auto">
 
-        <div class="banner-container w-full border-4 border-white aspect-[3/1] max-h-72">
-            <img src="./1786892820788.png" alt="Zombie High School Welcome Banner" class="banner-img" onerror="this.onerror=null; this.src='18174.png';">
-            
+        <!-- 메인 배너 -->
+        <div class="banner-container w-full border-4 border-white aspect-[3/1] max-h-72" id="tiltBanner" onclick="clickBanner()">
+            <img src="./1786892820788.png" alt="Welcome Banner" class="banner-img" onerror="this.onerror=null; this.src='18174.png';">
             <div class="absolute bottom-2 right-3 bg-black/40 backdrop-blur-md text-white text-[10px] sm:text-xs px-2.5 py-1 rounded-full font-medium">
                 배너 이미지 출처: 1564335님
             </div>
         </div>
 
+        <!-- 메인 카드 -->
         <div class="leaf-card p-6 sm:p-8 md:p-10 text-center space-y-4 border-2 border-white">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EBF7F3] text-[#3F9E78] text-xs sm:text-sm font-bold tracking-wide border border-[#C6EADF]">
                 ZOMBIE HIGH SCHOOL CLAN
             </div>
 
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight">
-                푸른잎 클랜
+            <!-- 이스터에그 트리거 타이틀 -->
+            <h1 onclick="triggerCloverParty(event)" class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight cursor-pointer select-none hover:text-[#3F9E78] transition">
+                푸른잎 클랜 🍀
             </h1>
 
             <div class="flex flex-wrap justify-center gap-1.5 text-[11px] sm:text-xs pt-1">
@@ -254,15 +271,14 @@
                 <span class="bg-[#EBF7F3] text-[#3F9E78] px-2.5 py-1 rounded-full font-medium border border-[#C6EADF]">#현생존중</span>
             </div>
 
+            <!-- 피드백 강화 복사 버튼 -->
             <div class="flex flex-wrap items-center justify-center gap-2.5 pt-1 text-xs sm:text-sm">
                 <span class="bg-slate-100 text-slate-700 px-4 py-2 rounded-full font-mono font-bold border border-slate-200/80 shadow-sm">
                     TAG: [DEF6FA]
                 </span>
-                <button onclick="copyClanId()" class="bg-[#EBF7F3] hover:bg-[#D8F0E8] text-[#3F9E78] px-4 py-2 rounded-full font-mono font-bold transition flex items-center gap-2 border border-[#C6EADF] shadow-sm active:scale-95">
-                    <span>ID: <span id="clanId">13614609</span></span>
-                    <svg class="w-4 h-4 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                    </svg>
+                <button id="copyBtn" onclick="copyClanId()" class="bg-[#EBF7F3] hover:bg-[#D8F0E8] text-[#3F9E78] px-4 py-2 rounded-full font-mono font-bold transition flex items-center gap-2 border border-[#C6EADF] shadow-sm active:scale-95">
+                    <span id="copyBtnText">ID: <span id="clanId">13614609</span></span>
+                    <svg id="copyIcon" class="w-4 h-4 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
                 </button>
             </div>
 
@@ -272,19 +288,17 @@
             </p>
         </div>
 
+        <!-- 아코디언 메뉴 -->
         <div class="space-y-4">
 
+            <!-- 기본 정보 -->
             <div class="accordion-item">
                 <button class="accordion-btn text-sm sm:text-base" onclick="toggleAccordion(this)">
                     <span class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-[#58C499]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
+                        <svg class="w-5 h-5 text-[#58C499]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         클랜 기본 정보 & 버프
                     </span>
-                    <svg class="w-5 h-5 arrow-icon text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
+                    <svg class="w-5 h-5 arrow-icon text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div class="accordion-content-wrapper">
                     <div class="accordion-content-inner">
@@ -302,118 +316,63 @@
 
                             <div class="bg-[#EBF7F3] p-4 rounded-2xl border border-[#C6EADF] space-y-2.5">
                                 <div class="font-bold text-[#3F9E78] text-center text-sm sm:text-base mb-2">인게임 버프 혜택</div>
-                                <div class="flex justify-between border-b border-[#C6EADF] pb-2">
-                                    <span class="text-slate-600">경험치 획득량</span>
-                                    <span class="font-bold text-slate-800">+25%</span>
-                                </div>
-                                <div class="flex justify-between border-b border-[#C6EADF] pb-2">
-                                    <span class="text-slate-600">미네랄 획득량</span>
-                                    <span class="font-bold text-slate-800">+23%</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-slate-600">크리티컬 확률</span>
-                                    <span class="font-bold text-slate-800">+4%</span>
-                                </div>
+                                <div class="flex justify-between border-b border-[#C6EADF] pb-2"><span>경험치 획득량</span><span class="font-bold text-slate-800">+25%</span></div>
+                                <div class="flex justify-between border-b border-[#C6EADF] pb-2"><span>미네랄 획득량</span><span class="font-bold text-slate-800">+23%</span></div>
+                                <div class="flex justify-between"><span>크리티컬 확률</span><span class="font-bold text-slate-800">+4%</span></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- 운영진 목록 -->
             <div class="accordion-item">
                 <button class="accordion-btn text-sm sm:text-base" onclick="toggleAccordion(this)">
                     <span class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-[#58C499]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                        </svg>
+                        <svg class="w-5 h-5 text-[#58C499]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                         운영진 목록
                     </span>
-                    <svg class="w-5 h-5 arrow-icon text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
+                    <svg class="w-5 h-5 arrow-icon text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div class="accordion-content-wrapper">
                     <div class="accordion-content-inner">
                         <div class="accordion-body text-xs sm:text-sm text-slate-600 space-y-3">
-                            
                             <div class="flex items-center justify-between p-3 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC]">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-base">🍀</span>
-                                    <span class="font-bold text-slate-400">Master</span>
-                                </div>
+                                <div class="flex items-center gap-2"><span class="text-base">🍀</span><span class="font-bold text-slate-400">Master</span></div>
                                 <div class="flex items-center gap-2.5">
-                                    <div class="profile-avatar">
-                                        <img src="./master.jpg" alt="츄냥" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-5 h-5 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
-                                    </div>
+                                    <div class="profile-avatar"><img src="./master.jpg" alt="츄냥" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-5 h-5 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';"></div>
                                     <span class="font-bold text-slate-800 text-sm sm:text-base">츄냥</span>
                                 </div>
                             </div>
-
                             <div class="flex items-center justify-between p-3 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC]">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-base text-[#58C499]">✿</span>
-                                    <span class="font-bold text-slate-400">Sub Master</span>
-                                </div>
+                                <div class="flex items-center gap-2"><span class="text-base text-[#58C499]">✿</span><span class="font-bold text-slate-400">Sub Master</span></div>
                                 <div class="flex items-center gap-3">
-                                    <div class="flex items-center gap-1.5">
-                                        <div class="profile-avatar">
-                                            <img src="./sub1.png" alt="적타" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-5 h-5 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
-                                        </div>
-                                        <span class="font-bold text-slate-800 text-xs sm:text-sm">적타</span>
-                                    </div>
+                                    <div class="flex items-center gap-1.5"><div class="profile-avatar"><img src="./sub1.png" alt="적타" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-5 h-5 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';"></div><span class="font-bold text-slate-800 text-xs sm:text-sm">적타</span></div>
                                     <span class="text-slate-300">•</span>
-                                    <div class="flex items-center gap-1.5">
-                                        <div class="profile-avatar">
-                                            <img src="./sub2.png" alt="둔하" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-5 h-5 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
-                                        </div>
-                                        <span class="font-bold text-slate-800 text-xs sm:text-sm">둔하</span>
-                                    </div>
+                                    <div class="flex items-center gap-1.5"><div class="profile-avatar"><img src="./sub2.png" alt="둔하" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-5 h-5 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';"></div><span class="font-bold text-slate-800 text-xs sm:text-sm">둔하</span></div>
                                 </div>
                             </div>
-
                             <div class="p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC] space-y-2.5">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-base text-[#3F9E78]">❀</span>
-                                    <span class="font-bold text-slate-400">Executive</span>
-                                </div>
+                                <div class="flex items-center gap-2"><span class="text-base text-[#3F9E78]">❀</span><span class="font-bold text-slate-400">Executive</span></div>
                                 <div class="grid grid-cols-3 gap-2 pt-1">
-                                    <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-slate-100">
-                                        <div class="profile-avatar !w-8 !h-8">
-                                            <img src="./exec2.png" alt="이담" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-4 h-4 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
-                                        </div>
-                                        <span class="font-semibold text-slate-700 text-xs sm:text-sm">이담</span>
-                                    </div>
-                                    <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-slate-100">
-                                        <div class="profile-avatar !w-8 !h-8">
-                                            <img src="./exec3.png" alt="클냥" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-4 h-4 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
-                                        </div>
-                                        <span class="font-semibold text-slate-700 text-xs sm:text-sm">클냥</span>
-                                    </div>
-                                    <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-slate-100">
-                                        <div class="profile-avatar !w-8 !h-8">
-                                            <img src="./exec4.png" alt="mc" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-4 h-4 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';">
-                                        </div>
-                                        <span class="font-semibold text-slate-700 text-xs sm:text-sm">mc</span>
-                                    </div>
+                                    <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-slate-100"><div class="profile-avatar !w-8 !h-8"><img src="./exec2.png" alt="이담" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-4 h-4 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';"></div><span class="font-semibold text-slate-700 text-xs sm:text-sm">이담</span></div>
+                                    <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-slate-100"><div class="profile-avatar !w-8 !h-8"><img src="./exec3.png" alt="클냥" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-4 h-4 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';"></div><span class="font-semibold text-slate-700 text-xs sm:text-sm">클냥</span></div>
+                                    <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-slate-100"><div class="profile-avatar !w-8 !h-8"><img src="./exec4.png" alt="mc" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-4 h-4 text-slate-400\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>';"></div><span class="font-semibold text-slate-700 text-xs sm:text-sm">mc</span></div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- 가입 전형 -->
             <div class="accordion-item">
                 <button class="accordion-btn text-sm sm:text-base" onclick="toggleAccordion(this)">
                     <span class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-[#58C499]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
+                        <svg class="w-5 h-5 text-[#58C499]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         가입 전형 & 아트부 조건
                     </span>
-                    <svg class="w-5 h-5 arrow-icon text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
+                    <svg class="w-5 h-5 arrow-icon text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div class="accordion-content-wrapper">
                     <div class="accordion-content-inner">
@@ -422,24 +381,20 @@
                                 <div class="font-bold text-slate-800 text-sm">일반 전형</div>
                                 <div class="text-slate-500">가입 즉시 2만 미네랄 기부</div>
                             </div>
-
                             <div class="p-4 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC] space-y-1">
                                 <div class="font-bold text-[#3F9E78] text-sm">친목 전형</div>
                                 <div class="text-slate-500">가입 즉시 5천 미네랄 기부 및 오픈채팅방 참여 필수</div>
                             </div>
-
                             <div class="p-4 bg-[#EBF7F3] rounded-2xl border border-[#C6EADF] space-y-2.5">
                                 <div class="font-bold text-[#3F9E78] text-sm sm:text-base flex justify-between items-center">
                                     <span>아트 전형 상세</span>
                                     <span class="text-xs bg-white px-2.5 py-1 rounded-full border border-[#C6EADF] text-[#3F9E78]">특별 전형</span>
                                 </div>
-                                
                                 <div class="space-y-1 text-slate-600 leading-relaxed">
                                     <div>• <strong>리퀘스트 전형 (14/20):</strong> 미네랄 리퀘스트 개장 및 운영</div>
                                     <div>• <strong>단트 전형 (1/3):</strong> 단체 트레이싱 1년에 2장 이상</div>
                                     <div class="line-through text-slate-400">• <strong>로고 전형 (2/2):</strong> 모집 마감</div>
                                 </div>
-
                                 <div class="pt-2.5 border-t border-[#C6EADF] text-xs text-slate-500 space-y-1.5 leading-relaxed">
                                     <p><strong>[아트부 혜택]</strong> 현생 존중, 슬롯/마감 자율, 마감 디스코드, 다중 클랜 허용, 인게임 미접속 제명 없음, 개인정보 공개 요구 없음</p>
                                     <p><strong>[지원 양식]</strong> 닉네임 / 원하는 전형 / 레이어 인증 가능 디지털 그림 3장 이상 (심사 최대 7일 소요)</p>
@@ -450,17 +405,14 @@
                 </div>
             </div>
 
+            <!-- 수칙 -->
             <div class="accordion-item">
                 <button class="accordion-btn text-sm sm:text-base" onclick="toggleAccordion(this)">
                     <span class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-[#58C499]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77 1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                        </svg>
+                        <svg class="w-5 h-5 text-[#58C499]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77 1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                         클랜 기본 수칙
                     </span>
-                    <svg class="w-5 h-5 arrow-icon text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
+                    <svg class="w-5 h-5 arrow-icon text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div class="accordion-content-wrapper">
                     <div class="accordion-content-inner">
@@ -483,46 +435,32 @@
                 </div>
             </div>
 
+            <!-- Q&A -->
             <div class="accordion-item">
                 <button class="accordion-btn text-sm sm:text-base" onclick="toggleAccordion(this)">
                     <span class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-[#58C499]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
+                        <svg class="w-5 h-5 text-[#58C499]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         자주 묻는 질문 (Q&A)
                     </span>
-                    <svg class="w-5 h-5 arrow-icon text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
+                    <svg class="w-5 h-5 arrow-icon text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div class="accordion-content-wrapper">
                     <div class="accordion-content-inner">
-                        <div class="accordion-body text-xs sm:text-sm text-[#58C499] space-y-3">
+                        <div class="accordion-body text-xs sm:text-sm space-y-3">
                             <div class="p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC] space-y-1">
-                                <div class="font-bold text-[#3F9E78] flex items-center gap-1.5">
-                                    <span>Q. 나이 제한이나 성별 제한이 있나요?</span>
-                                </div>
+                                <div class="font-bold text-[#3F9E78]">Q. 나이 제한이나 성별 제한이 있나요?</div>
                                 <p class="text-slate-600 pl-1">A. 기본적인 매너와 수칙을 지켜주신다면 나이나 성별에 관한 제약 없이 누구나 환영합니다!</p>
                             </div>
-                            
                             <div class="p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC] space-y-1">
-                                <div class="font-bold text-[#3F9E78] flex items-center gap-1.5">
-                                    <span>Q. 아트부 지원 시 심사는 얼마나 걸리나요?</span>
-                                </div>
+                                <div class="font-bold text-[#3F9E78]">Q. 아트부 지원 시 심사는 얼마나 걸리나요?</div>
                                 <p class="text-slate-600 pl-1">A. 지원 양식 제출 후 운영진 내부 검토를 거쳐 최대 7일 이내에 개별 안내드립니다.</p>
                             </div>
-
                             <div class="p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC] space-y-1">
-                                <div class="font-bold text-[#3F9E78] flex items-center gap-1.5">
-                                    <span>Q. 개인 사정으로 장기 미접속을 해야 할 때는요?</span>
-                                </div>
+                                <div class="font-bold text-[#3F9E78]">Q. 개인 사정으로 장기 미접속을 해야 할 때는요?</div>
                                 <p class="text-slate-600 pl-1">A. 시험 기간이나 여행 등 사유가 있으실 경우 사전에 운영진에게 미리 알려주시면 제명 대상에서 제외됩니다.</p>
                             </div>
-
                             <div class="p-3.5 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC] space-y-1">
-                                <div class="font-bold text-[#3F9E78] flex items-center gap-1.5">
-                                    <span>Q. 복귀 유저나 초보자도 가입 가능한가요?</span>
-                                </div>
+                                <div class="font-bold text-[#3F9E78]">Q. 복귀 유저나 초보자도 가입 가능한가요?</div>
                                 <p class="text-slate-600 pl-1">A. 네! 게임을 막 시작하셨거나 오랫동안 쉬다 오신 복귀 유저분들도 편하게 활동하실 수 있습니다.</p>
                             </div>
                         </div>
@@ -530,14 +468,29 @@
                 </div>
             </div>
 
+            <!-- 맨 밑 업데이트 기록 버튼 -->
+            <div class="leaf-card p-4 sm:p-5 text-center">
+                <button onclick="openModal()" class="w-full flex items-center justify-between text-slate-700 font-bold text-xs sm:text-sm hover:text-[#3F9E78] transition px-2 py-1">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-[#58C499]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        클랜 페이지 업데이트 기록
+                    </span>
+                    <span class="bg-[#EBF7F3] text-[#3F9E78] text-[11px] px-2.5 py-1 rounded-full border border-[#C6EADF]">
+                        자세히 보기
+                    </span>
+                </button>
+            </div>
+
         </div>
 
-        <div class="pt-3">
+        <!-- 하단 가입 버튼 -->
+        <div class="pt-3" id="joinBtnArea">
             <a href="https://open.kakao.com/o/gL5sTn1h" target="_blank" class="btn-pulse block w-full bg-[#58C499] hover:bg-[#48B388] text-white py-4 sm:py-5 rounded-full font-extrabold text-center text-sm sm:text-base shadow-lg transition transform hover:-translate-y-0.5 active:scale-95">
                 푸른잎 클랜 가입 신청하기
             </a>
         </div>
 
+        <!-- 푸터 -->
         <footer class="text-center text-xs text-slate-400 pt-2 pb-8 space-y-1 leading-relaxed">
             <p>배너 이미지 출처: <span class="font-semibold text-slate-500">1564335님</span></p>
             <p>츄냥님 프로필 출처: <span class="font-semibold text-slate-500">육공님</span></p>
@@ -546,60 +499,219 @@
 
     </div>
 
+    <!-- 플로팅 퀵 버튼 (스크롤 시 등장) -->
+    <div class="floating-action" id="floatingBar">
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="floating-btn" title="맨 위로">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"></path></svg>
+        </button>
+        <a href="https://open.kakao.com/o/gL5sTn1h" target="_blank" class="floating-btn !bg-[#58C499] !text-white !border-[#58C499]" title="가입 신청">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+    </div>
+
+    <!-- 중앙 모달 (업데이트 기록) -->
+    <div id="updateModal" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-container p-6 sm:p-7 space-y-5" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 class="text-base sm:text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <span class="text-[#58C499]">📋</span> 클랜 페이지 업데이트 기록
+                </h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 transition text-2xl font-bold leading-none p-1">&times;</button>
+            </div>
+
+            <!-- 업데이트 목록 -->
+            <div class="space-y-3.5 text-xs sm:text-sm text-slate-600">
+                <div class="p-4 bg-[#F6FAF8] rounded-2xl border border-[#E1F2EC] space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-[#3F9E78] text-sm">최신 업데이트</span>
+                        <span class="text-[11px] text-slate-400 font-mono">2026.08.18</span>
+                    </div>
+                    <ul class="space-y-1.5 pl-1 text-slate-600 leading-relaxed">
+                        <li class="flex items-start gap-2">
+                            <span class="text-[#58C499] font-bold">•</span>
+                            <span>업데이트 목록 기능 추가</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-[#58C499] font-bold">•</span>
+                            <span>진행도 표시 바 추가</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-[#58C499] font-bold">•</span>
+                            <span>터치 피드백 추가</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <button onclick="closeModal()" class="w-full bg-[#58C499] hover:bg-[#48B388] text-white py-3 rounded-2xl font-bold text-xs sm:text-sm transition shadow-md active:scale-95">
+                확인
+            </button>
+        </div>
+    </div>
+
+    <!-- 복사 토스트 알림 -->
     <div id="toast" class="fixed bottom-8 left-1/2 bg-slate-800/90 backdrop-blur-sm text-white text-xs sm:text-sm font-medium px-6 py-3 rounded-full shadow-2xl">
         클랜 ID가 복사되었습니다!
     </div>
 
     <script>
-        // 아코디언 토글 함수
+        // 모달 열기/닫기 제어
+        function openModal() {
+            document.getElementById('updateModal').classList.add('active');
+        }
+
+        function closeModal(event) {
+            document.getElementById('updateModal').classList.remove('active');
+        }
+
+        // 1. 스크롤 진행 바 및 플로팅 버튼 제어
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scrollProgress').style.width = scrolled + '%';
+
+            const floatingBar = document.getElementById('floatingBar');
+            if (winScroll > 300) {
+                floatingBar.classList.add('show');
+            } else {
+                floatingBar.classList.remove('show');
+            }
+        });
+
+        // 2. 스마트 아코디언 (자동 스크롤 기능)
         function toggleAccordion(button) {
             const currentItem = button.parentElement;
+            const isActive = currentItem.classList.contains('active');
+
             document.querySelectorAll('.accordion-item').forEach(item => {
-                if (item !== currentItem) item.classList.remove('active');
+                item.classList.remove('active');
             });
-            currentItem.classList.toggle('active');
+
+            if (!isActive) {
+                currentItem.classList.add('active');
+                setTimeout(() => {
+                    currentItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 200);
+            }
         }
 
-        // 클랜 ID 복사 함수
+        // 3. 복사 피드백 강화
         function copyClanId() {
             const clanId = document.getElementById('clanId').innerText;
-            const tempElem = document.createElement('textarea');
-            tempElem.value = clanId;
-            document.body.appendChild(tempElem);
-            tempElem.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempElem);
-            const toast = document.getElementById('toast');
-            toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); }, 2000);
+            const copyBtnText = document.getElementById('copyBtnText');
+            
+            navigator.clipboard.writeText(clanId).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                setTimeout(() => { toast.classList.remove('show'); }, 2000);
+
+                const originalContent = copyBtnText.innerHTML;
+                copyBtnText.innerHTML = '<span class="text-[#3F9E78]">✔ 복사 완료!</span>';
+                
+                setTimeout(() => {
+                    copyBtnText.innerHTML = originalContent;
+                }, 1500);
+            });
         }
 
-        // 배경 나뭇잎 생성 스크립트
+        // 4. 배너 3D 마우스 패럴랙스
+        const banner = document.getElementById('tiltBanner');
+        banner.addEventListener('mousemove', (e) => {
+            const rect = banner.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            banner.style.transform = `rotateX(${-y / 15}deg) rotateY(${x / 20}deg) scale(1.02)`;
+        });
+
+        banner.addEventListener('mouseleave', () => {
+            banner.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+        });
+
+        // 5. 이스터에그 스크립트
+        let titleClickCount = 0;
+        let titleClickTimer;
+
+        function triggerCloverParty(e) {
+            titleClickCount++;
+            clearTimeout(titleClickTimer);
+
+            // 5번 연속 클릭 시 파티 발생
+            if (titleClickCount >= 5) {
+                titleClickCount = 0;
+                showParticles(e.clientX, e.clientY);
+                showToastMessage('🍀 네잎클로버 행운 파티! 푸른잎 클랜에 오신 것을 환영해요! 🍀');
+            } else {
+                titleClickTimer = setTimeout(() => { titleClickCount = 0; }, 1000);
+            }
+        }
+
+        function showParticles(originX, originY) {
+            const particles = ['🍀', '🌿', '🌸', '✨', '🍃'];
+            const count = 30;
+
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'easter-particle';
+                particle.innerText = particles[Math.floor(Math.random() * particles.length)];
+                
+                particle.style.left = (originX || window.innerWidth / 2) + 'px';
+                particle.style.top = (originY || window.innerHeight / 2) + 'px';
+                
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 250 + 50;
+                const dx = Math.cos(angle) * distance + 'px';
+                const dy = Math.sin(angle) * distance + 'px';
+
+                particle.style.setProperty('--dx', dx);
+                particle.style.setProperty('--dy', dy);
+
+                document.body.appendChild(particle);
+
+                setTimeout(() => { particle.remove(); }, 1500);
+            }
+        }
+
+        let bannerClickCount = 0;
+        function clickBanner() {
+            bannerClickCount++;
+            if (bannerClickCount >= 3) {
+                bannerClickCount = 0;
+                showToastMessage('🎉 비눗방울 속 푸른잎 클랜 비밀 공간 발견!');
+                showParticles();
+            }
+        }
+
+        function showToastMessage(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+                toast.innerText = '클랜 ID가 복사되었습니다!';
+            }, 3000);
+        }
+
+        // 6. 나뭇잎 생성
         function createLeaves() {
             const container = document.getElementById('leavesContainer');
             const leafIcons = ['🍃', '🌿', '🍀'];
-            const leafCount = 12; // 나뭇잎 수량
-
-            for (let i = 0; i < leafCount; i++) {
+            for (let i = 0; i < 12; i++) {
                 const leaf = document.createElement('div');
                 leaf.className = 'leaf';
                 leaf.innerText = leafIcons[Math.floor(Math.random() * leafIcons.length)];
-                
-                // 위치 및 속도 랜덤 생성
                 leaf.style.left = Math.random() * 100 + '%';
-                leaf.style.animationDuration = (Math.random() * 8 + 7) + 's'; // 7~15초 사이 속도
+                leaf.style.animationDuration = (Math.random() * 8 + 7) + 's';
                 leaf.style.animationDelay = (Math.random() * 10) + 's';
                 leaf.style.fontSize = (Math.random() * 0.8 + 0.8) + 'rem';
-                
                 container.appendChild(leaf);
             }
         }
 
-        // 페이지 로드 후 나뭇잎 생성
         window.addEventListener('DOMContentLoaded', createLeaves);
     </script>
 </body>
 </html>
-
 
 
